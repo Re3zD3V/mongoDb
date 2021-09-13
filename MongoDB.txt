@@ -1,0 +1,157 @@
+Utilisation Mongo:
+* Lancer mongod sur command shell
+* Lancer mongo sur nouvelle command shell
+
+Lister Base de Données:
+* show dbs
+
+Utilisation Base de Données:
+* use existingDbName/newDbName
+
+Lister Collections Base de Données:
+* show collections
+
+Consultation Collection:
+* db.collectionName.find()
+* db.collectionName.find().pretty()
+
+Créer Collection:
+* db.createCollection("collectionName")
+
+Inserer document dans collection:
+* db.collectionName.insert({
+	"key1": "value1",
+	"key2": "value2"
+  });
+* db.collectionName.insert({
+	key1: 'value1',
+	key2: 'value2'
+});
+
+Modifier valeur dans document:
+* db.collectionName.update(
+	{
+		key: 'value'
+    },
+    {$set: {
+		key: 'newValue'
+    }}
+);
+* db.cars.update(
+	{
+		name:'ford'
+	},
+	{$set: {
+			name:'toyota'
+	}}
+);
+
+Modifier document: Insérer nouvelle pair key:value
+* db.collectionName.update(
+	{
+		key: 'value'
+    },
+    {$set: {
+		newKey: 'newValue'
+    }},
+	{$upsert: true}
+);
+* db.cars.update(
+	{
+		name:'ford'
+	},
+	{$set: {
+			transmission: 'automatic'
+	}},
+	{$upsert: true}
+);
+
+Supprimer tous les documents d'une collection
+* db.collectionName.remove({})
+
+Supprimer document/s d'une collection
+* db.collectionName.remove({
+	key: 'value'
+});
+* db.collectionName.remove({
+	name: 'ford'
+});
+
+Utilisation boucle pour dans mongo shell
+* for (var i = 0; i < 10; i++) {
+	db.collectionName.insert({
+		x: i
+	})
+}
+* for (var i = 1; i <= 10; i++) {
+	db.things.insert({
+		x: i
+	})
+}
+
+Type de Données:
+* String:
+	name:String
+	ex: { name: "John" }
+* Number:
+	likes: Number
+	ex: { likes: Number }
+* Date:
+	timestamp: Date
+	ex: { timestamp: ISODate(...) }
+* Array:
+	tags: Array // tags: []
+	ex: { tags: [ tag1, tag2 ] }
+* Boolean:
+	published: Boolean
+	ex: { published: true }
+* ObjectId:
+	_idCreator: Schema.ObjectId
+	ex: { _idCreator: "41239878" }
+* Buffer:
+	Video, Images, Audio
+* Mixed:
+	Combines different types
+	ex: In some documents String and Arrays on others
+
+Supprimer collection
+* db.collectionName.drop();
+
+Renommer collection
+* db.collectionName.renameCollection("target", dropTarget)
+	target = newName
+	dropTarget = boolean : drop the target before renaming insert
+* db.student.renameCollection("students", false);
+
+
+Consulter collection:
+
+// Tous les documents
+* db.collection.find({});
+
+// Document spécifique
+* db.collection.find( { key: 'value' } );
+ex: db.students.find({'name': 'Rachel'});
+
+* db.collection.find( { key: { $gt: value } } );
+ex: db.students.find({units: {$gt: 6}});
+
+* db.collection.find( { key: { $lt: value } } );
+ex: db.students.find({units: {$lt: 7}});
+
+* db.collection.find( { key: { $in: ['value'] } } );
+ex: db.students.find({classes: {$in: ['history']}});
+
+// Trier résultat
+* db.collection.find( { key: { $in: ['value'] } } ).sort( { key: 1/-1} );
+ex: db.students.find({classes: {$in: ['history']}}).sort({units: 1});
+ex: db.students.find({classes: {$in: ['history']}}).sort({units: 1}).pretty();
+
+// Limiter le nombre de résultats
+* db.collection.find( { key: { $in: ['value'] } } ).limit(number);
+ex: db.students.find({classes: {$in: ['history']}}).sort({units: 1}).limit(1);
+ex: db.students.find({}).sort({name: 1}).limit(2).pretty();
+
+
+// Affichage amélioré
+* db.collection.find( { key: 'value' } ).pretty();
